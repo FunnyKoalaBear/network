@@ -11,6 +11,14 @@ img {
     margin: 10px 0 0 0; /* 5px top, 0px right, 0px bottom, 0px left */
 }
 
+.post {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 button {
     background-color: #42a2c8; /* Light blue color */
     color: white; /* White text */

@@ -8,7 +8,7 @@ from .models import User, Post, Follow, Comment
 
 
 def index(request):
-    return render(request, "network/index.html")
+    return render(request, "network/index.html") 
 
 
 def login_view(request):
@@ -89,7 +89,7 @@ def editProfile(request, username):
         profile_user.username = newUsername
         profile_user.bio = newBio
         profile_user.profile_picture = newProfile_picture
-        
+
         profile_user.save()
 
         login(request, profile_user) #re-login the user after changing username
@@ -108,3 +108,19 @@ def editProfile(request, username):
 
         })
         
+
+def newPost(request):
+
+    if request.method == "POST":
+        content = request.POST["content"]
+        user = request.user
+
+        #creating the post 
+
+    
+    else:
+        return render(request, "newtwork/newPost.html", {
+            "userName": user.username,
+            "bio": user.bio,
+            "pfp": user.profile_picture
+        })
