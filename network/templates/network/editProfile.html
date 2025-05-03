@@ -2,38 +2,63 @@
 
 {% load static %}
 
-
 {% block body %}
 
     <h1>Edit your profile</h1>
 
-    <form action="{% url 'editProfile' userName %}" method="post">
+    <form action="{% url 'editProfile' userName %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         {% if message %}
-            <div>{{ message }}</div>
+            <div class="message">{{ message }}</div>
         {% endif %}
 
-        <div>
-            <label for="pfp">Profile Picture</label>
+        <div class="form-group">
+            <label id="myLabel">Profile Picture</label>
             <input type="file" name="profile_picture">
         </div>
 
-        <div>
+        <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" value="{{ username }}">
+            <input type="text" id="username" name="username" value="{{ userName }}">
         </div>
 
-        <div>
+        <div class="form-group">
             <label for="bio">Bio</label>
             <input type="text" id="bio" name="bio" value="{{ bio }}">
         </div>
 
-
         <button type="submit">Save Changes</button>
-
     </form>
 
+    <style>
+        h1 {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-bottom: 20px;
+        }
 
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 
 {% endblock %}

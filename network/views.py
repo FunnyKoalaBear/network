@@ -83,15 +83,16 @@ def editProfile(request, username):
         #for saving the profile
         newUsername = request.POST["username"]
         newBio = request.POST["bio"]
-        #newProfile_picture = request.FILES.get("profile_picture")
+        newProfile_picture = request.FILES.get("profile_picture")
 
         profile_user = User.objects.get(username=username)
         profile_user.username = newUsername
         profile_user.bio = newBio
+        profile_user.profile_picture = newProfile_picture
+        
         profile_user.save()
 
         login(request, profile_user) #re-login the user after changing username
-        #profile_user.profile_picture = newProfile_picture
 
         return render(request, "network/profile.html", {
             "userName": profile_user.username,
