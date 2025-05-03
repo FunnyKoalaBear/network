@@ -1,0 +1,38 @@
+{% extends "network/layout.html" %}
+
+{% load static %}
+
+
+{% block body %}
+
+    <h1>Edit your profile</h1>
+
+    <form>
+        {% csrf_token %}
+
+        <div>
+            <label for="pfp">Profile Picture</label>
+            <input type="file" name="profile_picture">
+        </div>
+
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" value="{{ username }}">
+        </div>
+
+        <div>
+            <label for="bio">Bio</label>
+            <input type="text" id="bio" name="bio" value="{{ bio }}">
+        </div>
+
+
+        <a href="{% url 'editProfile' userName %}" method="post">
+            <button>Save Changes</button>
+        </a>
+
+    </form>
+
+
+
+
+{% endblock %}

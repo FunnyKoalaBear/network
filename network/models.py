@@ -1,21 +1,22 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models 
+
+
 #gives field types like CharField, IntegerField, TextField, ImageField
 #relatoinships like OneToOneField, ForeignKey, ManyToManyField
 
 
 class User(AbstractUser):
-    pass
+    bio = models.TextField(max_length=30, blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/penguin.png', blank=True)
 
 
-class Profile(models.Model):
-    #pfp, bio
-    bio = models.TextField(max_length=30, blank=True)
-    ##ADD PFP IN THE FUTURE
 
     def __str__(self):
-        return f"{self.user.username} Profile - {self.bio}"
+        return f"{self.username} Profile - {self.bio}"
 
+
+    
 class Post(models.Model):
     #user, content, timestamp, likes
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")

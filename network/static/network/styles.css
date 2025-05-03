@@ -1,0 +1,23 @@
+/* Add a few pixels of margin to everything on the left */
+* {
+    margin-left: 5px;
+}
+
+button {
+    margin: 0;
+}
+
+button {
+    background-color: #42a2c8; /* Light blue color */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 12px; /* Rounded edges */
+    padding: 10px 20px; /* Add some padding */
+    font-size: 16px; /* Adjust font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+button:hover {
+    background-color: #c42fcc; /* Slightly darker blue on hover */
+}

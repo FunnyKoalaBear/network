@@ -1,0 +1,33 @@
+{% extends "network/layout.html" %}
+
+{% load static %}
+
+
+{% block body %}
+    <h1>Hello {{ userName|capfirst }}</h1>
+
+    <div>
+
+        <div>
+            <h2>Bio</h2>
+            <p>{{bio}}</p>    
+        </div>
+
+        <div>
+            {% if pfp %}
+                <img src="{{ pfp.url }}" alt="Profile Picture" style="width: 100px; height: 100px;">
+            {% else %}
+                <p>No profile picture available.</p>
+            {% endif %}
+      
+        </div>
+
+    </div>
+
+    
+    <a href="{% url 'editProfile' userName %}">
+        <button>Edit Profile</button>
+    </a>
+    
+
+{% endblock %}

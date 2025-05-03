@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Post, Follow, Comment
 
 
 def index(request):
@@ -61,3 +61,32 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+def profile(request, username):
+    #follower count, following count, display all posts, follow/unfollow button
+    profile_user = User.objects.get(username=username)
+    
+
+    return render(request, "network/profile.html", {
+        "userName": profile_user.username,
+        "bio": profile_user.bio,
+        "posts": profile_user.posts.all(),
+        "pfp": profile_user.profile_picture,   
+    })
+
+
+def editProfile(request, username):
+    profile_user = User.objects.get(username=username)
+
+    if request.method == "POST":
+        #for saving the profile
+        pass
+
+    else: 
+        return render(request, "network/editProfile.html", {
+            "userName": profile_user.username,
+            "bio": profile_user.bio
+
+        })
+        
