@@ -3,19 +3,19 @@
 <!--This will just display all posts-->
 
 {% block body %}
-    <h1>All Posts</h1>
+    <h1>New Post</h1>
 
     <div class="post">
-        <h5>New Post</h5>
 
-        <form action="{% url 'newPost' %}" method="POST" style="margin: 0;"></form>
+        <form action="{% url 'newPost' %}" method="POST" style="margin: 0;">
             {% csrf_token %}
 
-            <textarea id="postContent" rows="2" style="width: 60%;" placeholder="Write your post here..."></textarea>
+            <input id="postContent" autofocus type="text" name="title" placeholder="Title">
             <br>
-            <a href=""><button id="submitPost">Submit</button></a>
+            <br>
+            <textarea id="postContent" rows="2" style="width: 60%;" name="content" placeholder="Write your post here..."></textarea>
+            <br>
+            <button id="submitPost" type="submit">Submit</button>
         </form>
-
-    </div>
 
 {% endblock %}

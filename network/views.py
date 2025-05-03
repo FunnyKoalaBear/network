@@ -8,7 +8,10 @@ from .models import User, Post, Follow, Comment
 
 
 def index(request):
-    return render(request, "network/index.html") 
+    return render(request, "network/index.html", {
+        "posts": Post.objects.all().order_by("-timestamp"),
+        "user": request.user
+    }) 
 
 
 def login_view(request):
@@ -110,17 +113,41 @@ def editProfile(request, username):
         
 
 def newPost(request):
+    user = request.user
 
     if request.method == "POST":
-        content = request.POST["content"]
-        user = request.user
+        content = request.POST["content"]   
+        title = request.POST["title"]     
 
         #creating the post 
-
+        post = Post.objects.create(user=user, content=content, title=title)
+        post.save()
+        #redirecting to the profile page
+        return render(request, "network/profile.html", {
+            "userName": user.username,
+            "bio": user.bio,
+            "posts": user.posts.all(),
+            "pfp": user.profile_picture
+        })
     
     else:
-        return render(request, "newtwork/newPost.html", {
+        return render(request, "network/newPost.html", {
             "userName": user.username,
             "bio": user.bio,
             "pfp": user.profile_picture
         })
+
+
+def likePost(request):
+    pass
+
+
+def commentPost(request):
+    pass
+
+
+def editPost(request):
+    pass
+
+def deletePost(request):
+    pass

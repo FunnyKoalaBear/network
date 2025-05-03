@@ -32,6 +32,21 @@
     <br>
 
     <h2>Posts</h2>
+
+    {% for post in posts %}
+        <div class="post">
+            <h5>{{ post.title }}</h5>
+            <p>{{ post.content }}</p>
+            <p style="color: rgb(71, 64, 64);">Posted by {{ post.user.username }} on {{ post.timestamp }}</p>
+            
+            <p style="display: flex; align-items: center; margin: 0;">
+                <span style="font-size: 24px; margin-right: 8px; vertical-align: middle;">❤️</span>
+                <span style="line-height: 30px;">{{ post.likes.count }}</span>
+            </p>
+
+            <p>Comments: {{ post.comments.count }}</p>
+        </div>
+    {% endfor %}
     
 
 {% endblock %}

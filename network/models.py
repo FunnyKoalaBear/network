@@ -18,8 +18,9 @@ class User(AbstractUser):
 
     
 class Post(models.Model):
-    #user, content, timestamp, likes
+    #title, user, content, timestamp, likes
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
+    title = models.CharField(max_length=30, default="Untitled")
     content = models.TextField(max_length=280)
     timestamp = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name="liked_posts", blank=True)
