@@ -7,8 +7,12 @@
 
     <h1>Edit your profile</h1>
 
-    <form>
+    <form action="{% url 'editProfile' userName %}" method="post">
         {% csrf_token %}
+
+        {% if message %}
+            <div>{{ message }}</div>
+        {% endif %}
 
         <div>
             <label for="pfp">Profile Picture</label>
@@ -26,12 +30,9 @@
         </div>
 
 
-        <a href="{% url 'editProfile' userName %}" method="post">
-            <button>Save Changes</button>
-        </a>
+        <button type="submit">Save Changes</button>
 
     </form>
-
 
 
 

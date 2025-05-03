@@ -4,30 +4,34 @@
 
 
 {% block body %}
-    <h1>Hello {{ userName|capfirst }}</h1>
+    
 
-    <div>
-
-        <div>
-            <h2>Bio</h2>
-            <p>{{bio}}</p>    
-        </div>
-
+    <div style="display: flex; align-items: center; gap: 20px;">
         <div>
             {% if pfp %}
-                <img src="{{ pfp.url }}" alt="Profile Picture" style="width: 100px; height: 100px;">
+                <img src="{{ pfp.url }}" alt="Profile Picture" style="width: 300; height: 300px;">
             {% else %}
                 <p>No profile picture available.</p>
             {% endif %}
-      
         </div>
-
+        <div>
+            <h1>Hello {{ userName|capfirst }}</h1>
+            <h2>Bio</h2>
+            <p>{{bio}}</p>    
+        </div>
     </div>
 
     
     <a href="{% url 'editProfile' userName %}">
         <button>Edit Profile</button>
     </a>
+
+
+ 
+    <hr>
+    <br>
+
+    <h2>Posts</h2>
     
 
 {% endblock %}
