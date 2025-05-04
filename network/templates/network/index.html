@@ -5,18 +5,23 @@
 <!--This will just display all posts-->
 
 {% block body %}
+    <script src="{% static 'network/network.js' %}"></script>
+    
     <h1>All Posts</h1>
 
     <div class="post">
+
         <h5>New Post</h5>
 
-        <form action="{% url 'newPost' %}" method="POST" style="margin: 0;"></form>
+        <form action="{% url 'newPost' %}" method="POST" style="margin: 0;">
             {% csrf_token %}
 
             <textarea id="postContent" rows="2" style="width: 60%;" placeholder="Write your post here..."></textarea>
             <br>
-            <a href=""><button id="submitPost">Submit</button></a>
+            <button id="submitPost">Submit</button>
+            
         </form>
+
     </div>
 
     {% for post in posts %}
@@ -26,8 +31,12 @@
             <p style="color: rgb(71, 64, 64);">Posted by {{ post.user.username }} on {{ post.timestamp }}</p>
             
             <p style="display: flex; align-items: center; margin: 0;">
-                <a  href="{% url 'likePost' post.id %}"><span style="font-size: 24px; margin-right: 8px; vertical-align: middle;">❤️</span></a>
-                <span style="line-height: 30px;">{{ post.likes.count }}</span>
+
+                <button class="likeButton" data-id="{{ post.id }}">
+                    <span style="font-size: 24px; margin-right: 8px; vertical-align: middle;">❤️</span>
+                </button>
+                
+                <span style="line-height: 30px;" id="likeCount-{{ post.id }}">{{ post.likes.count }}</span>
             </p>
 
             <p>Comments: {{ post.comments.count }}</p>

@@ -4,6 +4,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from django.http import JsonResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import User, Post, Follow, Comment
 
 
@@ -139,22 +143,27 @@ def newPost(request):
 
 
 def likePost(request, post_id):
-    post =  Post.objects.get(id=post_id)
-    user = request.user
+    if request.method == "POST":
+        post =  Post.objects.get(id=post_id)
+        user = request.user
 
-    if post.likes.filter(id=user.id).exists():
-        #remove like
-        post.likes.remove(user)
+        if post.likes.filter(id=user.id).exists():
+            #remove like
+            post.likes.remove(user)
+        else: 
+            #add like
+            post.likes.add(user)
+        
         post.save()
-    else: 
-        #add like
-        post.likes.add(user)
-        post.save()
+        data = {
+            'likes': post.likes.count(),
+        }
+        return JsonResponse(data)
+     
+    else:
+        # Handling non-POST request
+        return JsonResponse({"error": "Invalid request"}, status=400)  # In case of non-POST request
 
-    return render(request, "network/index.html", {
-        "posts": Post.objects.all().order_by("-timestamp"),
-        "user": request.user
-    }) 
 
 
 

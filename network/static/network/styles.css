@@ -34,6 +34,22 @@ button:hover {
     background-color: #c42fcc; /* Slightly darker blue on hover */
 }
 
+.likeButton {
+    all: unset;
+    outline: none; 
+}
+
+.likeButton:hover {
+    transform: scale(1.4);
+    transition: transform 0.2s ease;
+    outline: none; 
+    background-color: #ffffff;
+}
+
+.likeButton:focus {
+    outline: none; 
+}
+
 .message {
     color: green;
     text-align: center;
