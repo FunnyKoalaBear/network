@@ -26,20 +26,28 @@
 
     {% for post in posts %}
         <div class="post">
-            <h5>{{ post.title }}</h5>
-            <p>{{ post.content }}</p>
-            <p style="color: rgb(71, 64, 64);">Posted by {{ post.user.username }} on {{ post.timestamp }}</p>
-            
+            <h5 id="postTitle-{{ post.id }}">{{ post.title }}</h5>
+            <p id="postContent-{{ post.id }}">{{ post.content }}</p>
+            <p id="postInfo-{{ post.id }}" style="color: rgb(71, 64, 64);">Posted by {{ post.user.username }} on {{ post.timestamp }}</p>
             <p style="display: flex; align-items: center; margin: 0;">
 
-                <button class="likeButton" data-id="{{ post.id }}">
+                <button class="likeButton" data-id="{{ post.id }}" id="likeButton-{{ post.id }}">
                     <span style="font-size: 24px; margin-right: 8px; vertical-align: middle;">❤️</span>
                 </button>
                 
                 <span style="line-height: 30px;" id="likeCount-{{ post.id }}">{{ post.likes.count }}</span>
             </p>
 
-            <p>Comments: {{ post.comments.count }}</p>
+            <p id="comments-{{ post.id }}">Comments: {{ post.comments.count }}</p>
+
+
+
+            {% if request.user == post.user %}
+                <button id="editButton-{{ post.id }}" class="editButton" data-id="{{ post.id }}" style="margin-left: 5px; color: rgb(53, 53, 167);">  Edit Post ✏️</button>
+            {% endif %}
+
+
+
         </div>
     {% endfor %}
 

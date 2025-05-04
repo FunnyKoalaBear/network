@@ -18,28 +18,27 @@ img {
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
-
 button {
-    background-color: #42a2c8; /* Light blue color */
-    color: white; /* White text */
-    border: none; /* Remove border */
-    border-radius: 12px; /* Rounded edges */
-    padding: 10px 20px; /* Add some padding */
-    font-size: 16px; /* Adjust font size */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth hover effect */
+    background-color: #42a2c8;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 5px 20px; /* Reduced top and bottom padding for shorter height */
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #c42fcc; /* Slightly darker blue on hover */
+    background-color: #c42fcc; 
 }
 
-.likeButton {
+.likeButton, .editButton {
     all: unset;
     outline: none; 
 }
 
-.likeButton:hover {
+.likeButton:hover, .editButton:hover{
     transform: scale(1.4);
     transition: transform 0.2s ease;
     outline: none; 
@@ -71,4 +70,4 @@ button:hover {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
-}
+}bu

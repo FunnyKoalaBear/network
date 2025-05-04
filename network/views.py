@@ -9,6 +9,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Post, Follow, Comment
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -83,6 +84,7 @@ def profile(request, username):
     })
 
 
+@login_required
 def editProfile(request, username):
     profile_user = User.objects.get(username=username)
 
@@ -116,6 +118,7 @@ def editProfile(request, username):
         })
         
 
+@login_required
 def newPost(request):
     user = request.user
 
@@ -142,6 +145,7 @@ def newPost(request):
         })
 
 
+@login_required
 def likePost(request, post_id):
     if request.method == "POST":
         post =  Post.objects.get(id=post_id)
@@ -163,16 +167,71 @@ def likePost(request, post_id):
     else:
         # Handling non-POST request
         return JsonResponse({"error": "Invalid request"}, status=400)  # In case of non-POST request
+        
 
 
-
-
+@login_required
 def commentPost(request):
     pass
 
 
-def editPost(request):
-    pass
+@login_required
+def editPost(request, post_id):
 
+    try:
+        post = Post.objects.get(id=post_id)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post not found"}, status=404)
+    
+    #for saving edit
+    if request.method == "POST":
+        user = request.user
+
+        if post.user == user:
+
+            title = request.POST.get("title", "")
+            content = request.POST.get("content", "")
+
+            post.title = title
+            post.content = content
+
+            post.save()
+            return JsonResponse({"message": "Post updated successfully"})
+        
+        else:
+            #unlogined user is accessing
+            return JsonResponse({"error": "Not authorized to view this post"}, status=403)
+
+    #for getting post information to edit it
+    elif request.method == "GET":
+        user = request.user
+
+        if post.user == user:
+            #verified that post author is editing
+            content = post.content
+            title = post.title
+
+            data = {
+                'title': title,
+                'content': content
+            }
+
+            return JsonResponse(data)
+        
+        else:
+            #unlogined user is accessing
+            return JsonResponse({"error": "Not authorized to view this post"}, status=403)
+        
+        
+    return JsonResponse({"error": "Invalid Request"}, status=400)  # In case of non-POST request
+
+
+
+@login_required
+def savePost(request, post_id):
+    pass
+            
+
+@login_required
 def deletePost(request):
     pass
