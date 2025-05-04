@@ -28,7 +28,7 @@
         <div class="post">
             <h5 id="postTitle-{{ post.id }}">{{ post.title }}</h5>
             <p id="postContent-{{ post.id }}">{{ post.content }}</p>
-            <p id="postInfo-{{ post.id }}" style="color: rgb(71, 64, 64);">Posted by {{ post.user.username }} on {{ post.timestamp }}</p>
+            <p id="postInfo-{{ post.id }}" style="color: rgb(71, 64, 64);">Posted by <a href="{% url 'profile' post.user.username %}">{{ post.user.username }}</a> on {{ post.timestamp }}</p>
             <p style="display: flex; align-items: center; margin: 0;">
 
                 <button class="likeButton" data-id="{{ post.id }}" id="likeButton-{{ post.id }}">

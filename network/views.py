@@ -73,7 +73,13 @@ def register(request):
 
 def profile(request, username):
     #follower count, following count, display all posts, follow/unfollow button
-    profile_user = User.objects.get(username=username)
+    try:
+        profile_user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return HttpResponse("User not found", status=404)
+    
+    followerCount = Follow.objects.filter(following=profile_user).count()
+    followingCount = Follow.objects.filter(follower=profile_user).count()
     
 
     return render(request, "network/profile.html", {
@@ -81,6 +87,8 @@ def profile(request, username):
         "bio": profile_user.bio,
         "posts": Post.objects.filter(user=profile_user).order_by("-timestamp"),
         "pfp": profile_user.profile_picture,   
+        "followerCount": followerCount,
+        "followingCount": followingCount
     })
 
 
@@ -88,16 +96,21 @@ def profile(request, username):
 def editProfile(request, username):
     profile_user = User.objects.get(username=username)
 
-    if request.method == "POST":
+    newProfile_picture = profile_user.profile_picture
+
+    if request.method == "POST" and request.user.username == username:
         #for saving the profile
         newUsername = request.POST["username"]
         newBio = request.POST["bio"]
-        newProfile_picture = request.FILES.get("profile_picture")
 
-        profile_user = User.objects.get(username=username)
+        if request.FILES.get("profile_picture") != None: 
+            newProfile_picture =request.FILES.get("profile_picture")
+        
+    
+        profile_user.profile_picture = newProfile_picture
         profile_user.username = newUsername
         profile_user.bio = newBio
-        profile_user.profile_picture = newProfile_picture
+        
 
         profile_user.save()
 
@@ -232,4 +245,9 @@ def commentPost(request):
 #extra feature
 @login_required
 def deletePost(request):
+    pass
+
+
+@login_required
+def listFollowers(request):
     pass

@@ -17,15 +17,35 @@
         </div>
         <div>
             <h1>Hello {{ userName|capfirst }}</h1>
-            <h2>Bio</h2>
-            <p>{{bio}}</p>    
+            
+            <p>{{bio}}</p>   
+
+            <hr>
+            <div style="display: flex; justify-content: space-between; gap: 20px;">
+                <div>
+                    <h6><a>Followers {{ followerCount }}</a></h6>
+                </div>
+                <div>
+                    <h6><a>Following {{ followingCount }}</a></h6>
+                </div>
+            </div>
+            
         </div>
     </div>
 
-    
-    <a href="{% url 'editProfile' userName %}">
-        <button>Edit Profile</button>
-    </a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'editProfile' userName %}">
+            <button>Edit Profile</button>
+        </a>
+    {% else %}
+        <a href="">
+            <button>Edit Profile</button>
+        </a>
+
+        <a href="">
+            <button>Edit Profile</button>
+        </a>
+    {% endif %}
 
 
  
