@@ -1,4 +1,3 @@
-
 console.log("Script loaded");
 
 
@@ -114,9 +113,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Adding a <br> tag after the input box for better spacing
                 const brTag = document.createElement("br");
                 inputBox.parentNode.insertBefore(brTag, inputBox.nextSibling);
+                brTag.id = "tag1";
                 // Adding another <br> tag after the first one for additional spacing
                 const secondBrTag = document.createElement("br");
                 brTag.parentNode.insertBefore(secondBrTag, brTag.nextSibling);
+                secondBrTag.id = "tag2";
 
                 //autofilling content area
                 const postContentElement = document.getElementById(`postContent-${postID}`);
@@ -127,10 +128,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 textArea.setAttribute("rows", "2");
                 textArea.style.width = "60%";
 
-                const editButton = document.getElementById(`editButton-${postID}`);
-                editButton.innerText = "Save Changes";
-                editButton.className = "button"; // Set the class to a general button 
-                editButton.style = "color: white;"
+                //hiding editButton
+                const editButton = document.getElementById(`editButton-${postID}`)
+                editButton.style = "display: none;"
+                //showing saveButton
+                const saveButton = document.getElementById(`saveButton-${postID}`)
+                saveButton.style = "display: block;"
 
 
             })
@@ -143,9 +146,108 @@ document.addEventListener("DOMContentLoaded", function() {
 })
 
 
+//adding save edits button functionality 
+document.addEventListener("DOMContentLoaded", function() {
 
-// body: JSON.stringify({ 
-//     post_id: postID,
-//     title: title,
-//     content: content
-// })
+    const saveButtons = document.querySelectorAll(".saveButton");
+    const csrftoken = getCookie("csrftoken");
+
+    console.log("save button loaded");
+
+    saveButtons.forEach(button =>{
+
+        button.addEventListener("click", function(event) {
+            event.preventDefault();
+    
+            const postID = button.getAttribute("data-id")
+
+            const titleInput = document.getElementById(`editTitle-${postID}`);
+            const contentInput = document.getElementById(`editContent-${postID}`);
+
+            const title = titleInput.value;
+            const content = contentInput.value;
+    
+            fetch(`editPost/${postID}`, {
+                method: 'POST',
+    
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+    
+                body: JSON.stringify({ 
+                    post_id: postID,
+                    title: title,
+                    content: content
+                })
+    
+            }) 
+            .then (response => response.json())
+            
+            .then (data => {
+                console.log("Saved Data");
+        
+                
+                //doing all the changes to get back usual post view 
+
+                //hiding unnecessary elements when editing post
+                document.getElementById(`postInfo-${postID}`).style.display = "block";
+                document.getElementById(`likeButton-${postID}`).style.display = "block";
+                document.getElementById(`comments-${postID}`).style.display = "block";
+                document.getElementById(`likeCount-${postID}`).style.display = "block";
+
+                //returning title to normal
+                const changeTitleElement = document.getElementById(`editTitle-${postID}`);
+                if (changeTitleElement) {
+                    console.log("EXISTSSS")
+                    const inputBox = document.createElement("h5");
+                    inputBox.type = "h5";
+                    inputBox.id = `postTitle-${postID}`;
+                    inputBox.innerText = title; 
+                    changeTitleElement.parentNode.replaceChild(inputBox, changeTitleElement);
+
+                }
+
+                //removing br 
+                const BrTag = document.getElementById(`tag1`);
+                if (BrTag) {
+                    BrTag.style = "display: none;";
+                }
+                const secondBrTag = document.getElementById(`tag2`);
+                if (secondBrTag) {
+                    secondBrTag.style = "display: none;";
+                }
+
+                //returning content to normal 
+                const changeContentElement = document.getElementById(`editContent-${postID}`);
+                if (changeContentElement) {
+                    console.log("text area exists")
+                    const contentBox = document.createElement("p")
+                    contentBox.type = "p"
+                    contentBox.id = `postContent-${postID}`;
+                    contentBox.innerText = content;
+                    changeContentElement.parentNode.replaceChild(contentBox, changeContentElement);
+
+                }
+                
+
+                //showing editButton
+                const editButton = document.getElementById(`editButton-${postID}`)
+                editButton.style = "display: block;"
+                //hiding saveButton
+                const saveButton = document.getElementById(`saveButton-${postID}`)
+                saveButton.style = "display: none;"
+                
+                
+            })
+            .catch(error => console.error("Error fetching post data:", error))
+            
+        })
+
+    })
+
+
+})
+
+
+

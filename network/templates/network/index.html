@@ -44,6 +44,7 @@
 
             {% if request.user == post.user %}
                 <button id="editButton-{{ post.id }}" class="editButton" data-id="{{ post.id }}" style="margin-left: 5px; color: rgb(53, 53, 167);">  Edit Post ✏️</button>
+                <button id="saveButton-{{ post.id }}" class="saveButton" data-id="{{ post.id }}" style="margin-left: 5px; color: rgb(53, 53, 167); display: none; " >  Save Changes</button>
             {% endif %}
 
 

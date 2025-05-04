@@ -33,12 +33,12 @@ button:hover {
     background-color: #c42fcc; 
 }
 
-.likeButton, .editButton {
+.likeButton, .editButton, saveButton {
     all: unset;
     outline: none; 
 }
 
-.likeButton:hover, .editButton:hover{
+.likeButton:hover, .editButton:hover, saveButton:hover {
     transform: scale(1.4);
     transition: transform 0.2s ease;
     outline: none; 
@@ -70,4 +70,4 @@ button:hover {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
-}bu
+}

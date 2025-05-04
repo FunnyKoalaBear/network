@@ -189,8 +189,9 @@ def editPost(request, post_id):
 
         if post.user == user:
 
-            title = request.POST.get("title", "")
-            content = request.POST.get("content", "")
+            data = json.loads(request.body) #wth u have to actually save the data in an object first, not just POST["VARIABLENAME"] too many hours spend on this lol
+            title = data.get("title")
+            content = data.get("content")
 
             post.title = title
             post.content = content
