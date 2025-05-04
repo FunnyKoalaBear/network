@@ -13,7 +13,8 @@ urlpatterns = [
     path("profile/<str:username>/edit", views.editProfile, name="editProfile"),
     path("newPost", views.newPost, name="newPost"),
     path("likePost/<int:post_id>", views.likePost ,name="likePost"),
-    path("editPost/<int:post_id>", views.editPost, name="editPost")
+    path("editPost/<int:post_id>", views.editPost, name="editPost"),
+    path("toggle_follow", views.toggle_follow, name="toggle_follow")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

@@ -80,7 +80,10 @@ def profile(request, username):
     
     followerCount = Follow.objects.filter(following=profile_user).count()
     followingCount = Follow.objects.filter(follower=profile_user).count()
-    
+
+    #check if user who is signed in is following the profile being checked
+    if request.user.is_authenticated:
+        alreadyFollowed = Follow.objects.filter(follower=request.user, following=profile_user).exists()
 
     return render(request, "network/profile.html", {
         "userName": profile_user.username,
@@ -88,7 +91,8 @@ def profile(request, username):
         "posts": Post.objects.filter(user=profile_user).order_by("-timestamp"),
         "pfp": profile_user.profile_picture,   
         "followerCount": followerCount,
-        "followingCount": followingCount
+        "followingCount": followingCount,
+        "follow" : alreadyFollowed
     })
 
 
@@ -235,6 +239,28 @@ def editPost(request, post_id):
     return JsonResponse({"error": "Invalid Request"}, status=400)  # In case of non-POST request
 
 
+@csrf_exempt
+@login_required
+def toggle_follow(request):
+    
+    if request.method == "POST":
+        data = json.loads(request.body)
+        targetUsername = data.get("targetUsername")
+
+        targetUser = User.objects.get(username=targetUsername)
+        currentUser = request.user 
+
+
+        if currentUser == targetUser:
+            return JsonResponse({"error": "You cannot follow yourself."}, status=400)
+        
+        followRelation, alreadyFollowed = Follow.objects.get_or_create(follower=currentUser, following=targetUser)
+
+        if not alreadyFollowed:
+            followRelation.delete()
+            return JsonResponse({"status": "unfollowed"})
+        else:
+            return JsonResponse({"status": "followed"})
 
 #extra feature
 @login_required

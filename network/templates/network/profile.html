@@ -16,14 +16,19 @@
             {% endif %}
         </div>
         <div>
-            <h1>Hello {{ userName|capfirst }}</h1>
+
+            {% if user.username == userName %}
+                <h1>Hello {{ userName|capfirst }}</h1>
+            {% else %}
+                <h1>{{ userName|capfirst }}'s Profile</h1>
+            {% endif %}
             
             <p>{{bio}}</p>   
 
             <hr>
             <div style="display: flex; justify-content: space-between; gap: 20px;">
                 <div>
-                    <h6><a>Followers {{ followerCount }}</a></h6>
+                    <h6><a>Followers <span id="followerCount">{{ followerCount }}</span></a></h6>
                 </div>
                 <div>
                     <h6><a>Following {{ followingCount }}</a></h6>
@@ -33,18 +38,24 @@
         </div>
     </div>
 
+    <!--Put this beside the h1 tag in the future-->
     {% if user.is_authenticated %}
-        <a href="{% url 'editProfile' userName %}">
-            <button>Edit Profile</button>
-        </a>
-    {% else %}
-        <a href="">
-            <button>Edit Profile</button>
-        </a>
+        {% if user.username == userName %}
+            <a href="{% url 'editProfile' userName %}">
+                <button>Edit Profile</button>
+            </a>
+        {% else %}
+            
+            {% if follow %}
 
-        <a href="">
-            <button>Edit Profile</button>
-        </a>
+                    <button id="followButton" data-username="{{ userName }}" style="background-color: brown;">Unfollow User</button>
+
+            {% else %}
+
+                    <button id="followButton" data-username="{{ userName }}" >Follow</button>
+
+            {% endif%}
+        {% endif %}
     {% endif %}
 
 

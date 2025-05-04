@@ -249,3 +249,47 @@ document.addEventListener("DOMContentLoaded", function() {
 })
 
 
+
+//toggle follow functionality
+document.addEventListener("DOMContentLoaded", function() {
+
+    console.log("Loading follow butttons");
+    const followButton = document.getElementById('followButton');
+    const csrftoken = getCookie("csrftoken");
+    
+
+    followButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        const username = followButton.dataset.username;
+
+        fetch(`/toggle_follow`, {
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({ targetUsername: username })
+        })
+        .then(response => response.json())
+        .then (data => {
+
+            const followerCountElement = document.getElementById('followerCount');
+            let count = parseInt(followerCountElement.textContent);
+
+            if (data.status == 'unfollowed') {
+                console.log("unfollowed");
+                followButton.innerText = "Follow";
+                followerCountElement.innerText = count - 1; 
+
+            }   
+            else if (data.status == 'followed') {
+                console.log("followed");
+                followButton.innerText = "Unfollow User";
+                followerCountElement.innerText = count + 1; 
+            }
+        })
+    })
+
+})
