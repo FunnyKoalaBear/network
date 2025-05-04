@@ -74,7 +74,7 @@ def profile(request, username):
     return render(request, "network/profile.html", {
         "userName": profile_user.username,
         "bio": profile_user.bio,
-        "posts": profile_user.posts.all(),
+        "posts": Post.objects.filter(user=profile_user).order_by("-timestamp"),
         "pfp": profile_user.profile_picture,   
     })
 
@@ -100,7 +100,7 @@ def editProfile(request, username):
         return render(request, "network/profile.html", {
             "userName": profile_user.username,
             "bio": profile_user.bio,
-            "posts": profile_user.posts.all(),
+            "posts": profile_user.posts.all().order_by("timestamp"),
             "pfp": profile_user.profile_picture,   
         })
 
@@ -138,8 +138,24 @@ def newPost(request):
         })
 
 
-def likePost(request):
-    pass
+def likePost(request, post_id):
+    post =  Post.objects.get(id=post_id)
+    user = request.user
+
+    if post.likes.filter(id=user.id).exists():
+        #remove like
+        post.likes.remove(user)
+        post.save()
+    else: 
+        #add like
+        post.likes.add(user)
+        post.save()
+
+    return render(request, "network/index.html", {
+        "posts": Post.objects.all().order_by("-timestamp"),
+        "user": request.user
+    }) 
+
 
 
 def commentPost(request):
