@@ -171,11 +171,6 @@ def likePost(request, post_id):
 
 
 @login_required
-def commentPost(request):
-    pass
-
-
-@login_required
 def editPost(request, post_id):
 
     try:
@@ -228,11 +223,13 @@ def editPost(request, post_id):
 
 
 
+#extra feature
 @login_required
-def savePost(request, post_id):
-    pass
-            
+def commentPost(request):
+    pass  
 
+
+#extra feature
 @login_required
 def deletePost(request):
     pass

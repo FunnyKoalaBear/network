@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const postID = button.getAttribute("data-id");
             
             //get the current content and title of the post
-            fetch(`editPost/${postID}`, {
+            fetch(`/editPost/${postID}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const title = titleInput.value;
             const content = contentInput.value;
     
-            fetch(`editPost/${postID}`, {
+            fetch(`/editPost/${postID}`, {
                 method: 'POST',
     
                 headers: {
@@ -229,8 +229,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     changeContentElement.parentNode.replaceChild(contentBox, changeContentElement);
 
                 }
-                
-                
 
                 //showing editButton
                 const editButton = document.getElementById(`editButton-${postID}`)
@@ -249,6 +247,5 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 })
-
 
 
