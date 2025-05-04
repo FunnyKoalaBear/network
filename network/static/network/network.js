@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 //showing editButton
                 const editButton = document.getElementById(`editButton-${postID}`)
-                editButton.style = "display: block;"
+                editButton.style = "display: block; color: rgb(53, 53, 167); "
                 //hiding saveButton
                 const saveButton = document.getElementById(`saveButton-${postID}`)
                 saveButton.style = "display: none;"
