@@ -14,7 +14,8 @@ urlpatterns = [
     path("newPost", views.newPost, name="newPost"),
     path("likePost/<int:post_id>", views.likePost ,name="likePost"),
     path("editPost/<int:post_id>", views.editPost, name="editPost"),
-    path("toggle_follow", views.toggle_follow, name="toggle_follow")
+    path("toggle_follow", views.toggle_follow, name="toggle_follow"),
+    path("following/<str:userName>", views.following, name="following")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

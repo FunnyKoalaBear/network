@@ -4,8 +4,14 @@
 
     <h2>Login</h2>
 
-    {% if message %}
-        <div>{{ message }}</div>
+    {% if messages %}
+
+        <div class="alert alert-info">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        
     {% endif %}
 
     <form action="{% url 'login' %}" method="post">

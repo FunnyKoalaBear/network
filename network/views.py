@@ -4,6 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from django.shortcuts import render, redirect  
+from django.contrib import messages
+
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -81,9 +84,12 @@ def profile(request, username):
     followerCount = Follow.objects.filter(following=profile_user).count()
     followingCount = Follow.objects.filter(follower=profile_user).count()
 
+    
     #check if user who is signed in is following the profile being checked
+    alreadyFollowed = False
     if request.user.is_authenticated:
         alreadyFollowed = Follow.objects.filter(follower=request.user, following=profile_user).exists()
+
 
     return render(request, "network/profile.html", {
         "userName": profile_user.username,
@@ -261,6 +267,26 @@ def toggle_follow(request):
             return JsonResponse({"status": "unfollowed"})
         else:
             return JsonResponse({"status": "followed"})
+
+
+def following(request, userName):
+    
+    if request.user.is_authenticated:
+        currentUser = User.objects.get(username=userName)
+
+        #values_list only extracts following field 
+        #flat=True changes from tuple to array
+        followedUsers = Follow.objects.filter(follower=currentUser).values_list("following", flat=True)
+        
+        return render(request, "network/following.html", {
+            #user_in is a lookup to check if followedUsers is in user field 
+            "posts": Post.objects.filter(user__in=followedUsers).order_by("-timestamp"),
+            "user": request.user,
+            "currentUsername": currentUser.username
+        }) 
+    else: 
+        messages.info(request, "You must log in to access this page.")
+        return redirect('login')
 
 #extra feature
 @login_required

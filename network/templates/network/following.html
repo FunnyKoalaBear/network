@@ -1,0 +1,40 @@
+{% extends "network/layout.html" %}
+
+{% load static %}
+
+<!--This will just display all posts by users someone follows-->
+
+{% block body %}
+    <script src="{% static 'network/network.js' %}"></script>
+    
+    <h1> {{currentUsername}}'s Following</h1>
+
+    {% for post in posts %}
+        <div class="post">
+            <h5 id="postTitle-{{ post.id }}">{{ post.title }}</h5>
+            <p id="postContent-{{ post.id }}">{{ post.content }}</p>
+            <p id="postInfo-{{ post.id }}" style="color: rgb(71, 64, 64);">Posted by <a href="{% url 'profile' post.user.username %}">{{ post.user.username }}</a> on {{ post.timestamp }}</p>
+            <p style="display: flex; align-items: center; margin: 0;">
+
+                <button class="likeButton" data-id="{{ post.id }}" id="likeButton-{{ post.id }}">
+                    <span style="font-size: 24px; margin-right: 8px; vertical-align: middle;">❤️</span>
+                </button>
+                
+                <span style="line-height: 30px;" id="likeCount-{{ post.id }}">{{ post.likes.count }}</span>
+            </p>
+
+            <p id="comments-{{ post.id }}">Comments: {{ post.comments.count }}</p>
+
+
+
+            {% if request.user == post.user %}
+                <button id="editButton-{{ post.id }}" class="editButton" data-id="{{ post.id }}" style="margin-left: 5px; color: rgb(53, 53, 167);">  Edit Post ✏️</button>
+                <button id="saveButton-{{ post.id }}" class="saveButton" data-id="{{ post.id }}" style="margin-left: 5px; color: rgb(53, 53, 167); display: none; " >  Save Changes</button>
+            {% endif %}
+
+
+
+        </div>
+    {% endfor %}
+
+{% endblock %}
