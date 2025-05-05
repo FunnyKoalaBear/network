@@ -16,10 +16,12 @@
         <form action="{% url 'newPost' %}" method="POST" style="margin: 0;">
             {% csrf_token %}
 
-            <textarea id="postContent" rows="2" style="width: 60%;" placeholder="Write your post here..."></textarea>
+            <input id="postContent" autofocus type="text" name="title" placeholder="Title">
             <br>
-            <button id="submitPost">Submit</button>
-            
+            <br>
+            <textarea id="postContent" rows="2" style="width: 60%;" name="content" placeholder="Write your post here..."></textarea>
+            <br>
+            <button id="submitPost" type="submit">Submit</button>
         </form>
 
     </div>

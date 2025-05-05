@@ -146,8 +146,8 @@ def newPost(request):
     user = request.user
 
     if request.method == "POST":
-        content = request.POST["content"]   
-        title = request.POST["title"]     
+        content = request.POST.get("content")
+        title = request.POST.get("title")  
 
         #creating the post 
         post = Post.objects.create(user=user, content=content, title=title)
