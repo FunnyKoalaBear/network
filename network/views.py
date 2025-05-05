@@ -145,6 +145,11 @@ def editProfile(request, username):
 def newPost(request):
     user = request.user
 
+    try:
+        profile_user = User.objects.get(username=user.username)
+    except User.DoesNotExist:
+        return HttpResponse("User not found", status=404)
+
     if request.method == "POST":
         content = request.POST.get("content")
         title = request.POST.get("title")  
@@ -152,12 +157,25 @@ def newPost(request):
         #creating the post 
         post = Post.objects.create(user=user, content=content, title=title)
         post.save()
+
+        followerCount = Follow.objects.filter(following=profile_user).count()
+        followingCount = Follow.objects.filter(follower=profile_user).count()
+
+        #check if user who is signed in is following the profile being checked
+        alreadyFollowed = False
+        if request.user.is_authenticated:
+            alreadyFollowed = Follow.objects.filter(follower=request.user, following=profile_user).exists()
+
+        
         #redirecting to the profile page
         return render(request, "network/profile.html", {
             "userName": user.username,
             "bio": user.bio,
             "posts": user.posts.all(),
-            "pfp": user.profile_picture
+            "pfp": user.profile_picture,
+            "followerCount": followerCount,
+            "followingCount": followingCount,
+            "follow" : alreadyFollowed
         })
     
     else:
