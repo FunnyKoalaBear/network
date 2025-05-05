@@ -14,10 +14,21 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import User, Post, Follow, Comment
 from django.contrib.auth.decorators import login_required
 
+from django.core.paginator import Paginator
+
 
 def index(request):
+    
+    #paginating
+    allPosts = Post.objects.all().order_by("-timestamp")
+    page_number = request.GET.get("page", 1)
+
+    # Create Paginator and get the posts for the current page
+    paginator = Paginator(allPosts, 10)
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "network/index.html", {
-        "posts": Post.objects.all().order_by("-timestamp"),
+        "posts": page_obj,
         "user": request.user
     }) 
 
@@ -90,11 +101,18 @@ def profile(request, username):
     if request.user.is_authenticated:
         alreadyFollowed = Follow.objects.filter(follower=request.user, following=profile_user).exists()
 
+    #paginating
+    allPosts = Post.objects.filter(user=profile_user).order_by("-timestamp")
+    page_number = request.GET.get("page", 1)
+
+    # Create Paginator and get the posts for the current page
+    paginator = Paginator(allPosts, 10)
+    page_obj = paginator.get_page(page_number)
 
     return render(request, "network/profile.html", {
         "userName": profile_user.username,
         "bio": profile_user.bio,
-        "posts": Post.objects.filter(user=profile_user).order_by("-timestamp"),
+        "posts": page_obj,
         "pfp": profile_user.profile_picture,   
         "followerCount": followerCount,
         "followingCount": followingCount,
